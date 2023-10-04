@@ -1,0 +1,183 @@
+DOCKER
+
+docker is containersation tool.Docker is a software platform that simplifies the process of building, running, managing and distributing applications.
+
+DOCKER COMMANDS:
+docker pull image name = pull the image from dockerhub
+docker run -itd image name = run the image 
+docker attach = enter into container
+docker ps = check running conatiners
+docker ps -a = check the all containers
+docker images = check the images
+docker logs container id = check the logs of container
+docker rm -f conatiner id = remove the container
+docker stop container id =  stop the container
+docker start container id = start the conatiner
+docker kill container id = kill the container
+docker rmi image name = remove the image
+docker run -d -t -p port number image id = run the image with port  number
+docker build -t name . = build the docker file to image
+docker exec -it container id sh = enter into conatiner
+docker tag image name repo name = tag the docker image 
+docker push repo name = pushing the repo into docker hub
+
+
+real time sample docker files 
+
+TOMCAT:-
+
+FROM tomcat:8.0-alpine
+
+MAINTAINER "vishnu"
+
+ADD https://tomcat.apache.org/tomcat-7.0-doc/appdev/sample/sample.war /usr/local/tomcat/webapps/
+
+EXPOSE 8080
+
+CMD ["catalina.sh", "run"]
+
+
+
+
+TOMCAT BASE AS UBUNTU
+
+FROM ubuntu:latest
+RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y install openjdk-11-jdk wget
+RUN mkdir /usr/local/tomcat
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.64/bin/apache-tomcat-9.0.64.tar.gz
+RUN cd /tmp && tar xvfz tomcat.tar.gz
+RUN cp -Rv /tmp/apache-tomcat-9.0.52/* /usr/local/tomcat/
+ADD https://test-s3-vishnu.s3.ap-south-1.amazonaws.com/sample.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD /usr/local/tomcat/bin/catalina.sh run
+
+
+APACHE DEPLOYMENT THROUGH  S3 BUCKET
+
+
+FROM ubuntu:18.04
+RUN apt-get update
+RUN apt-get install apache2 -y
+ADD https://test-s3-vishnu.s3.ap-south-1.amazonaws.com/index.html  /var/www/html
+RUN chmod 777 -R /var/www/html/index.html
+EXPOSE 80
+CMD ["apachectl", "-D", "FOREGROUND"]
+
+
+NGINX INSTALLATION:-
+   
+
+FROM ubuntu:latest
+
+MAINTAINER "vishnu"
+
+RUN apt-get update
+
+RUN apt install nginx -y
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+
+
+
+PYTHHON INSTALLATION
+
+
+FROM ubuntu:latest
+RUN apt-get update
+RUN apt install openjdk-11-jdk -y
+FROM python:3
+WORKDIR /usr/src/app
+COPY requirements.txt ./
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD [ "python", "./your-daemon-or-script.py" ]
+
+
+
+POSTGRE SQL
+     
+
+USER postgres
+RUN    /etc/init.d/postgresql start &&\
+    psql --command "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
+    createdb -O docker docker
+RUN /etc/init.d/postgresql restart
+RUN /etc/init.d/postgresql start
+RUN chmod 777 -R /var/run/postgresql/postgress
+RUN /etc/init.d/postgresql restart
+
+NODEJS
+
+FROM ubuntu:latest
+RUN apt-get update
+RUN apt install openjdk-11-jdk -y
+RUN apt install python3 -y
+RUN apt install nodejs -y
+RUN apt install npm -y
+RUN npm -g install create-react-app
+RUN npm install -g @angular/cli@9
+
+
+SONARQUBE INSTALLATION
+
+
+
+sudo su -
+cd /opt
+apt install wget unzip -y
+apt install openjdk-11-jre-headless 
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-8.9.1.44547.zip
+ unzip sonarqube-8.9.1.44547.zip
+useradd sonar
+ chown -R sonar:sonar /opt/sonarqube-8.9.1.44547/
+ chmod -R 775 /opt/sonarqube-8.9.1.44547/
+ su - sonar
+ cd sonarqube-8.9.1.44547
+cd bin
+cd linux-x86-64
+sh sonar.sh start
+sh sonar.sh status
+
+def mavenHome= tool name: 'maven3.8.2'
+
+sh "${mavenHome}/bin/mvn clean package"
+
+sh "${mavenHome}/bin/mvn sonar:sonar"
+
+
+INTERVIEW QUESTIONS:
+
+1.what is docker?
+2.Can you tell something about docker container?
+3.What are docker images?
+4.What is a DockerFile?
+5.Can you tell something about docker namespace?
+6.What is the docker command that lists the status of all docker containers?
+7.What is docker image registry?
+8.What is a Docker Hub?
+9.ifferentiate between COPY and ADD commands that are used in a Dockerfile?
+10.Can you tell the approach to login to the docker registry?
+11.List the most commonly used instructions in Dockerfile?
+12.What is the best way of deleting a container?
+13.Describe the lifecycle of Docker Container?
+14.What command is used for stopping a running container?
+15.What command is used for running images as a container?
+16.What command is used for viewing all running containers?
+17.What is a template used for describing a build of an image?
+18.What is the default IP address of the Docker host?
+19.What command is used to go inside a running container?
+20.What command is used for remove all stopped containers, unused networks, build caches, and dangling images?
+21.What is containerization?
+22.What is the lifecycle of a Docker Container?
+23.Docker Basic Commands?
+24.How do you get the number of containers running, paused and stopped?
+25.How to login into docker repository?
+26. How do you create a docker container from an image?
+27.Once you’ve worked with an image, how do you push it to docker hub?
+28.What platforms does docker run on?
+29.How many containers can run per host?
+30.How will you monitor Docker in production?
